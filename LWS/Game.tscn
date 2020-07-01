@@ -1,0 +1,400 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Assets/Bilder/LWSgras.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Bilder/LWSnfeld.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Bilder/LWSffeld.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Bilder/LWSgfeld.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Bilder/LWSfgfeld.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Bilder/LWSvgfeld.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Bilder/LWAtraktor.png" type="Texture" id=7]
+
+[sub_resource type="TileSet" id=1]
+0/name = "LWSgras.png 0"
+0/texture = ExtResource( 1 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 640, 640 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shapes = [  ]
+0/z_index = 0
+1/name = "LWSnfeld.png 1"
+1/texture = ExtResource( 2 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 672, 640 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shapes = [  ]
+1/z_index = 0
+
+[sub_resource type="GDScript" id=8]
+script/source = "extends Node2D
+
+
+func _ready():
+	pass
+	
+	
+	
+	
+	
+	
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 365.352, 10 )
+
+[sub_resource type="TileSet" id=3]
+0/name = "LWSnfeld.png 0"
+0/texture = ExtResource( 2 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 640, 640 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shapes = [  ]
+0/z_index = 0
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 9699.9, 282.837 )
+
+[sub_resource type="GDScript" id=9]
+script/source = "#------------------------------------------------------------------------------------------------------------
+extends StaticBody2D
+
+var aktiviert = false
+#------------------------------------------------------------------------------------------------------------
+func _ready():
+	pass
+#------------------------------------------------------------------------------------------------------------
+# warning-ignore:unused_argument
+func _process(delta):
+	key_input()
+	if aktiviert == false:
+		visible = false
+		pass
+	
+	elif aktiviert == true:
+		visible = true
+		feld_andern()
+		
+		
+	pass
+#------------------------------------------------------------------------------------------------------------
+func key_input():
+	if Input.is_action_just_pressed(\"Feld\"):
+		aktiviert = true
+#------------------------------------------------------------------------------------------------------------
+func feld_andern():
+	for body in Area2D.get_overlaping_bodys():
+		if body.name == \"Player\":
+			$Sprite.get_visibility()
+			if visible == true: 
+				visible = false
+			
+							#funktioniert nicht
+#------------------------------------------------------------------------------------------------------------
+	
+	
+	
+	
+	
+"
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends KinematicBody2D
+
+const UP_VECTOR = Vector2(0,0)
+const SPEED = 1000
+var movement = Vector2(0,0)
+
+func _ready():
+	
+	pass 
+
+# warning-ignore:unused_argument
+func _process(delta):
+	movement.x = 0
+	movement.y = 0
+	
+	check_key_input()
+	
+	movement = move_and_slide(movement, UP_VECTOR)
+	
+
+func check_key_input():
+	if Input.is_action_pressed(\"left\"):
+		$Sprite.rotation_degrees = -180
+		movement.x = -SPEED
+		
+	if Input.is_action_pressed(\"right\"):
+		$Sprite.rotation_degrees = 0
+		movement.x = SPEED
+		
+	if Input.is_action_pressed(\"down\"):
+		$Sprite.rotation_degrees = 90
+		movement.y = SPEED
+			
+	if Input.is_action_pressed(\"up\"):
+		$Sprite.rotation_degrees = -90
+		movement.y = -SPEED
+		
+	"
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 181.581, 141.093 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 131.102, 177.219 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 5099.61, 2865.03 )
+offset = Vector2( 10, 10 )
+current = true
+zoom = Vector2( 10, 9.6 )
+limit_left = -10000036
+
+[node name="Camera2D2" type="Camera2D" parent="."]
+position = Vector2( 5099.61, 2865.03 )
+offset = Vector2( 10, 10 )
+zoom = Vector2( 20, 20 )
+limit_left = -10000036
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 65544, 0, 0, 65545, 0, 0, 65546, 0, 0, 65547, 0, 0, 65548, 0, 0, 65549, 0, 0, 65550, 0, 0, 65551, 0, 0, 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 131079, 0, 0, 131080, 0, 0, 131081, 0, 0, 131082, 0, 0, 131083, 0, 0, 131084, 0, 0, 131085, 0, 0, 131086, 0, 0, 131087, 0, 0, 196608, 0, 0, 196609, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196614, 0, 0, 196615, 0, 0, 196616, 0, 0, 196617, 0, 0, 196618, 0, 0, 196619, 0, 0, 196620, 0, 0, 196621, 0, 0, 196622, 0, 0, 196623, 0, 0, 262144, 0, 0, 262145, 0, 0, 262146, 0, 0, 262147, 0, 0, 262148, 0, 0, 262149, 0, 0, 262150, 0, 0, 262151, 0, 0, 262152, 0, 0, 262153, 0, 0, 262154, 0, 0, 262155, 0, 0, 262156, 0, 0, 262157, 0, 0, 262158, 0, 0, 262159, 0, 0, 327680, 0, 0, 327681, 0, 0, 327682, 0, 0, 327683, 0, 0, 327684, 0, 0, 327685, 0, 0, 327686, 0, 0, 327687, 0, 0, 327688, 0, 0, 327689, 0, 0, 327690, 0, 0, 327691, 0, 0, 327692, 0, 0, 327693, 0, 0, 327694, 0, 0, 327695, 0, 0, 393216, 0, 0, 393217, 0, 0, 393218, 0, 0, 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 0, 0, 393223, 0, 0, 393224, 0, 0, 393225, 0, 0, 393226, 0, 0, 393227, 0, 0, 393228, 0, 0, 393229, 0, 0, 393230, 0, 0, 393231, 0, 0, 458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 0, 0, 458757, 0, 0, 458758, 0, 0, 458759, 0, 0, 458760, 0, 0, 458761, 0, 0, 458762, 0, 0, 458763, 0, 0, 458764, 0, 0, 458765, 0, 0, 458766, 0, 0, 458767, 0, 0, 524288, 0, 0, 524289, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0, 524294, 0, 0, 524295, 0, 0, 524296, 0, 0, 524297, 0, 0, 524298, 0, 0, 524299, 0, 0, 524300, 0, 0, 524301, 0, 0, 524302, 0, 0, 524303, 0, 0 )
+
+[node name="unbenutste felder" type="Node2D" parent="."]
+editor/display_folded = true
+script = SubResource( 8 )
+
+[node name="Unbenutztes feld1" type="StaticBody2D" parent="unbenutste felder"]
+editor/display_folded = true
+visible = false
+
+[node name="Area2D" type="Area2D" parent="unbenutste felder/Unbenutztes feld1"]
+modulate = Color( 0.133333, 0.694118, 0.298039, 1 )
+position = Vector2( -8036.41, -5532.03 )
+space_override = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="unbenutste felder/Unbenutztes feld1/Area2D"]
+position = Vector2( 8360, 5835 )
+scale = Vector2( 0.87, 30 )
+shape = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="unbenutste felder/Unbenutztes feld1"]
+tile_set = SubResource( 3 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 0, 0, 0 )
+
+[node name="Unbenutztes feld2" type="StaticBody2D" parent="unbenutste felder"]
+editor/display_folded = true
+visible = false
+
+[node name="Area2D" type="Area2D" parent="unbenutste felder/Unbenutztes feld2"]
+modulate = Color( 0.133333, 0.694118, 0.298039, 1 )
+position = Vector2( -7403.55, -5520.65 )
+space_override = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="unbenutste felder/Unbenutztes feld2/Area2D"]
+position = Vector2( 8360, 5835 )
+scale = Vector2( 0.87, 30 )
+shape = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="unbenutste felder/Unbenutztes feld2"]
+tile_set = SubResource( 3 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 1, 0, 0 )
+
+[node name="Unbenutztes feld3" type="StaticBody2D" parent="unbenutste felder"]
+editor/display_folded = true
+visible = false
+
+[node name="Area2D" type="Area2D" parent="unbenutste felder/Unbenutztes feld3"]
+modulate = Color( 0.133333, 0.694118, 0.298039, 1 )
+position = Vector2( -6750.09, -5502.5 )
+space_override = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="unbenutste felder/Unbenutztes feld3/Area2D"]
+position = Vector2( 8360, 5835 )
+scale = Vector2( 0.87, 30 )
+shape = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="unbenutste felder/Unbenutztes feld3"]
+tile_set = SubResource( 3 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 2, 0, 0 )
+
+[node name="Unbenutztes feld4" type="StaticBody2D" parent="unbenutste felder"]
+editor/display_folded = true
+visible = false
+
+[node name="Area2D" type="Area2D" parent="unbenutste felder/Unbenutztes feld4"]
+modulate = Color( 0.133333, 0.694118, 0.298039, 1 )
+position = Vector2( -6114.78, -5538.8 )
+space_override = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="unbenutste felder/Unbenutztes feld4/Area2D"]
+position = Vector2( 8360, 5835 )
+scale = Vector2( 0.87, 30 )
+shape = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="unbenutste felder/Unbenutztes feld4"]
+tile_set = SubResource( 3 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 3, 0, 0 )
+
+[node name="Unbenutztes feld5" type="StaticBody2D" parent="unbenutste felder"]
+editor/display_folded = true
+visible = false
+
+[node name="Area2D" type="Area2D" parent="unbenutste felder/Unbenutztes feld5"]
+modulate = Color( 0.133333, 0.694118, 0.298039, 1 )
+position = Vector2( -5479.48, -5538.8 )
+space_override = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="unbenutste felder/Unbenutztes feld5/Area2D"]
+position = Vector2( 8360, 5835 )
+scale = Vector2( 0.87, 30 )
+shape = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="unbenutste felder/Unbenutztes feld5"]
+tile_set = SubResource( 3 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 4, 0, 0 )
+
+[node name="Unbenutztes feld6" type="StaticBody2D" parent="unbenutste felder"]
+editor/display_folded = true
+visible = false
+
+[node name="Area2D" type="Area2D" parent="unbenutste felder/Unbenutztes feld6"]
+modulate = Color( 0.133333, 0.694118, 0.298039, 1 )
+position = Vector2( -4844.17, -5529.72 )
+space_override = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="unbenutste felder/Unbenutztes feld6/Area2D"]
+position = Vector2( 8360, 5835 )
+scale = Vector2( 0.87, 30 )
+shape = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="unbenutste felder/Unbenutztes feld6"]
+tile_set = SubResource( 3 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 5, 0, 0 )
+
+[node name="Unbenutztes feld7" type="StaticBody2D" parent="unbenutste felder"]
+editor/display_folded = true
+visible = false
+
+[node name="Area2D" type="Area2D" parent="unbenutste felder/Unbenutztes feld7"]
+modulate = Color( 0.133333, 0.694118, 0.298039, 1 )
+position = Vector2( -4199.79, -5511.57 )
+space_override = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="unbenutste felder/Unbenutztes feld7/Area2D"]
+position = Vector2( 8360, 5835 )
+scale = Vector2( 0.87, 30 )
+shape = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="unbenutste felder/Unbenutztes feld7"]
+tile_set = SubResource( 3 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 6, 0, 0 )
+
+[node name="Rand" type="Node2D" parent="."]
+editor/display_folded = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rand"]
+position = Vector2( 4046.86, -275.734 )
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Rand"]
+position = Vector2( -320.06, 3083.43 )
+rotation = 1.5708
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Rand"]
+position = Vector2( 10541, 3090.99 )
+rotation = 1.5708
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Rand"]
+position = Vector2( 5333.38, 6091.39 )
+shape = SubResource( 4 )
+
+[node name="Unbenutztes feld8" type="StaticBody2D" parent="."]
+script = SubResource( 9 )
+
+[node name="anderungszone" type="Area2D" parent="Unbenutztes feld8"]
+modulate = Color( 0.133333, 0.694118, 0.298039, 1 )
+position = Vector2( -8036.41, -5532.03 )
+space_override = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Unbenutztes feld8/anderungszone"]
+position = Vector2( 12834.8, 5835 )
+scale = Vector2( 0.87, 30 )
+shape = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="Unbenutztes feld8"]
+tile_set = SubResource( 3 )
+cell_size = Vector2( 640, 640 )
+format = 1
+tile_data = PoolIntArray( 7, 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="Unbenutztes feld8"]
+visible = false
+position = Vector2( 4800, 320 )
+texture = ExtResource( 2 )
+
+[node name="Sprite2" type="Sprite" parent="Unbenutztes feld8"]
+visible = false
+position = Vector2( 4800, 320 )
+texture = ExtResource( 3 )
+
+[node name="Sprite3" type="Sprite" parent="Unbenutztes feld8"]
+visible = false
+position = Vector2( 4800, 320 )
+texture = ExtResource( 4 )
+
+[node name="Sprite4" type="Sprite" parent="Unbenutztes feld8"]
+visible = false
+position = Vector2( 4800, 320 )
+texture = ExtResource( 5 )
+
+[node name="Sprite5" type="Sprite" parent="Unbenutztes feld8"]
+visible = false
+position = Vector2( 4800, 320 )
+texture = ExtResource( 6 )
+
+[node name="Player" type="KinematicBody2D" parent="."]
+editor/display_folded = true
+script = SubResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="Player"]
+position = Vector2( 594.064, 319.881 )
+texture = ExtResource( 7 )
+
+[node name="Area2D" type="Area2D" parent="Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
+position = Vector2( 568.261, 298.457 )
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2( 623.816, 300.225 )
+shape = SubResource( 7 )
